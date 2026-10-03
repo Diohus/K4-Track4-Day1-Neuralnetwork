@@ -37,6 +37,7 @@ Trong file CSV gốc `Cover_Type` là 1..7; sau `split_data.py`, `y = Cover_Type
 | 3 | Cottonwood/Willow | 0,5% |
 | 4 | Aspen | 1,6% |
 | 5 | Douglas-fir | 3,0% |
+
 | 6 | Krummholz | 3,5% |
 
 Dữ liệu **mất cân bằng**: đoán luôn lớp 1 cho accuracy 0,4876 nhưng macro-F1 chỉ ≈ 0,094. Vì vậy chỉ số chính của lab là macro-F1.

@@ -7,3 +7,7 @@ data/processed/
 *.pt
 *.pth
 *.ckpt
+
+.venv/
+.work/
+*.zip

@@ -1,0 +1,664 @@
+{
+  "split_sha256": "4a3e59267516c0b0131f91b211640ee976c70e3f81e1bf44b0e0cf4d134b90a5",
+  "split_seed": 42,
+  "val_fraction": 0.2,
+  "hypotheses": {
+    "baseline": "SGD momentum với lr phù hợp sẽ vượt đoán lớp đa số; khác seed có thể làm metric dao động.",
+    "loss": "MSE trên logits và one-hot có thang đo khác CE; có thể hội tụ chậm hoặc khác về macro-F1. So bằng metric, không so loss tuyệt đối.",
+    "optimizer": "Adam điều chỉnh bước theo từng tham số nên có thể hội tụ nhanh hơn SGD momentum, nhưng phải thử lr riêng cho mỗi optimizer.",
+    "hparam": "M-wide tăng năng lực biểu diễn, có thể tăng macro-F1 nhưng tốn thời gian và bộ nhớ hơn; chưa chắc có lợi nếu chưa hội tụ.",
+    "dropout": "Dropout 0.3 có thể giảm gap nếu baseline quá khớp; nếu train và val vẫn cùng giảm thì có thể làm chậm học.",
+    "clipping": "Clip phải kích hoạt để có tác dụng. Ở lr cao, giới hạn chuẩn gradient có thể giảm dao động nhưng không bảo đảm cứu được huấn luyện.",
+    "amp": "FP16 có thể giảm bộ nhớ, nhưng mạng nhỏ và GPU này có thể không nhanh hơn; chất lượng kỳ vọng gần FP32.",
+    "init": "Zeros giữ đối xứng và ReLU tại 0 chặn gradient lớp ẩn. Xavier/normal thay đổi phương sai kích hoạt và tốc độ học so với He."
+  },
+  "environment": {
+    "python": "3.13.0 (tags/v3.13.0:60403a5, Oct  7 2024, 09:38:07) [MSC v.1941 64 bit (AMD64)]",
+    "torch": "2.7.1+cu126",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce GTX 1650"
+  },
+  "bf16_native": false,
+  "majority_val_acc": 0.4875970826789441,
+  "planned": {
+    "search-sgd_momentum-lr0.01": {
+      "exp_id": "search-sgd_momentum-lr0.01",
+      "group": "optimizer",
+      "description": "Validation LR search: sgd_momentum, lr=0.01",
+      "loss": "ce",
+      "optimizer": "sgd_momentum",
+      "lr": 0.01,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "Adam điều chỉnh bước theo từng tham số nên có thể hội tụ nhanh hơn SGD momentum, nhưng phải thử lr riêng cho mỗi optimizer.",
+      "notes": "20 epochs; optimizer and its learning rate calibrated together; fixed seed 1."
+    },
+    "search-sgd_momentum-lr0.05": {
+      "exp_id": "search-sgd_momentum-lr0.05",
+      "group": "optimizer",
+      "description": "Validation LR search: sgd_momentum, lr=0.05",
+      "loss": "ce",
+      "optimizer": "sgd_momentum",
+      "lr": 0.05,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "Adam điều chỉnh bước theo từng tham số nên có thể hội tụ nhanh hơn SGD momentum, nhưng phải thử lr riêng cho mỗi optimizer.",
+      "notes": "20 epochs; optimizer and its learning rate calibrated together; fixed seed 1."
+    },
+    "search-sgd_momentum-lr0.1": {
+      "exp_id": "search-sgd_momentum-lr0.1",
+      "group": "optimizer",
+      "description": "Validation LR search: sgd_momentum, lr=0.1",
+      "loss": "ce",
+      "optimizer": "sgd_momentum",
+      "lr": 0.1,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "Adam điều chỉnh bước theo từng tham số nên có thể hội tụ nhanh hơn SGD momentum, nhưng phải thử lr riêng cho mỗi optimizer.",
+      "notes": "20 epochs; optimizer and its learning rate calibrated together; fixed seed 1."
+    },
+    "search-adam-lr0.0003": {
+      "exp_id": "search-adam-lr0.0003",
+      "group": "optimizer",
+      "description": "Validation LR search: adam, lr=0.0003",
+      "loss": "ce",
+      "optimizer": "adam",
+      "lr": 0.0003,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "Adam điều chỉnh bước theo từng tham số nên có thể hội tụ nhanh hơn SGD momentum, nhưng phải thử lr riêng cho mỗi optimizer.",
+      "notes": "20 epochs; optimizer and its learning rate calibrated together; fixed seed 1."
+    },
+    "search-adam-lr0.001": {
+      "exp_id": "search-adam-lr0.001",
+      "group": "optimizer",
+      "description": "Validation LR search: adam, lr=0.001",
+      "loss": "ce",
+      "optimizer": "adam",
+      "lr": 0.001,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "Adam điều chỉnh bước theo từng tham số nên có thể hội tụ nhanh hơn SGD momentum, nhưng phải thử lr riêng cho mỗi optimizer.",
+      "notes": "20 epochs; optimizer and its learning rate calibrated together; fixed seed 1."
+    },
+    "search-adam-lr0.003": {
+      "exp_id": "search-adam-lr0.003",
+      "group": "optimizer",
+      "description": "Validation LR search: adam, lr=0.003",
+      "loss": "ce",
+      "optimizer": "adam",
+      "lr": 0.003,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "Adam điều chỉnh bước theo từng tham số nên có thể hội tụ nhanh hơn SGD momentum, nhưng phải thử lr riêng cho mỗi optimizer.",
+      "notes": "20 epochs; optimizer and its learning rate calibrated together; fixed seed 1."
+    },
+    "base-s1": {
+      "exp_id": "base-s1",
+      "group": "baseline",
+      "description": "Baseline M-base",
+      "loss": "ce",
+      "optimizer": "sgd_momentum",
+      "lr": 0.05,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "SGD momentum với lr phù hợp sẽ vượt đoán lớp đa số; khác seed có thể làm metric dao động.",
+      "notes": "LR selected on validation; identical split seed 42."
+    },
+    "base-s2": {
+      "exp_id": "base-s2",
+      "group": "baseline",
+      "description": "Baseline M-base",
+      "loss": "ce",
+      "optimizer": "sgd_momentum",
+      "lr": 0.05,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 2,
+      "hypothesis": "SGD momentum với lr phù hợp sẽ vượt đoán lớp đa số; khác seed có thể làm metric dao động.",
+      "notes": "LR selected on validation; identical split seed 42."
+    },
+    "base-s3": {
+      "exp_id": "base-s3",
+      "group": "baseline",
+      "description": "Baseline M-base",
+      "loss": "ce",
+      "optimizer": "sgd_momentum",
+      "lr": 0.05,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 3,
+      "hypothesis": "SGD momentum với lr phù hợp sẽ vượt đoán lớp đa số; khác seed có thể làm metric dao động.",
+      "notes": "LR selected on validation; identical split seed 42."
+    },
+    "loss-mse": {
+      "exp_id": "loss-mse",
+      "group": "loss",
+      "description": "Controlled loss comparison",
+      "loss": "mse",
+      "optimizer": "sgd_momentum",
+      "lr": 0.05,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "MSE trên logits và one-hot có thang đo khác CE; có thể hội tụ chậm hoặc khác về macro-F1. So bằng metric, không so loss tuyệt đối.",
+      "notes": "One factor changed relative to baseline; fixed seed 1."
+    },
+    "wide": {
+      "exp_id": "wide",
+      "group": "hparam",
+      "description": "Controlled hparam comparison",
+      "loss": "ce",
+      "optimizer": "sgd_momentum",
+      "lr": 0.05,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        512,
+        256
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "M-wide tăng năng lực biểu diễn, có thể tăng macro-F1 nhưng tốn thời gian và bộ nhớ hơn; chưa chắc có lợi nếu chưa hội tụ.",
+      "notes": "One factor changed relative to baseline; fixed seed 1."
+    },
+    "drop-0.3": {
+      "exp_id": "drop-0.3",
+      "group": "dropout",
+      "description": "Controlled dropout comparison",
+      "loss": "ce",
+      "optimizer": "sgd_momentum",
+      "lr": 0.05,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.3,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "Dropout 0.3 có thể giảm gap nếu baseline quá khớp; nếu train và val vẫn cùng giảm thì có thể làm chậm học.",
+      "notes": "One factor changed relative to baseline; fixed seed 1."
+    },
+    "clip-normal": {
+      "exp_id": "clip-normal",
+      "group": "clipping",
+      "description": "Controlled clipping comparison",
+      "loss": "ce",
+      "optimizer": "sgd_momentum",
+      "lr": 0.05,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": 0.3896930664777756,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "Clip phải kích hoạt để có tác dụng. Ở lr cao, giới hạn chuẩn gradient có thể giảm dao động nhưng không bảo đảm cứu được huấn luyện.",
+      "notes": "One factor changed relative to baseline; fixed seed 1."
+    },
+    "highlr-no-clip": {
+      "exp_id": "highlr-no-clip",
+      "group": "clipping",
+      "description": "Controlled clipping comparison",
+      "loss": "ce",
+      "optimizer": "sgd_momentum",
+      "lr": 0.5,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "Clip phải kích hoạt để có tác dụng. Ở lr cao, giới hạn chuẩn gradient có thể giảm dao động nhưng không bảo đảm cứu được huấn luyện.",
+      "notes": "High-lr clipping pair changes lr relative to baseline; clip is the only difference within the pair."
+    },
+    "highlr-clip": {
+      "exp_id": "highlr-clip",
+      "group": "clipping",
+      "description": "Controlled clipping comparison",
+      "loss": "ce",
+      "optimizer": "sgd_momentum",
+      "lr": 0.5,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": 0.3896930664777756,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "Clip phải kích hoạt để có tác dụng. Ở lr cao, giới hạn chuẩn gradient có thể giảm dao động nhưng không bảo đảm cứu được huấn luyện.",
+      "notes": "High-lr clipping pair changes lr relative to baseline; clip is the only difference within the pair."
+    },
+    "init-zeros": {
+      "exp_id": "init-zeros",
+      "group": "init",
+      "description": "Controlled init comparison",
+      "loss": "ce",
+      "optimizer": "sgd_momentum",
+      "lr": 0.05,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "zeros",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "Zeros giữ đối xứng và ReLU tại 0 chặn gradient lớp ẩn. Xavier/normal thay đổi phương sai kích hoạt và tốc độ học so với He.",
+      "notes": "One factor changed relative to baseline; fixed seed 1."
+    },
+    "init-normal": {
+      "exp_id": "init-normal",
+      "group": "init",
+      "description": "Controlled init comparison",
+      "loss": "ce",
+      "optimizer": "sgd_momentum",
+      "lr": 0.05,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "normal",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "Zeros giữ đối xứng và ReLU tại 0 chặn gradient lớp ẩn. Xavier/normal thay đổi phương sai kích hoạt và tốc độ học so với He.",
+      "notes": "One factor changed relative to baseline; fixed seed 1."
+    },
+    "init-xavier": {
+      "exp_id": "init-xavier",
+      "group": "init",
+      "description": "Controlled init comparison",
+      "loss": "ce",
+      "optimizer": "sgd_momentum",
+      "lr": 0.05,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "xavier",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 1,
+      "hypothesis": "Zeros giữ đối xứng và ReLU tại 0 chặn gradient lớp ẩn. Xavier/normal thay đổi phương sai kích hoạt và tốc độ học so với He.",
+      "notes": "One factor changed relative to baseline; fixed seed 1."
+    },
+    "amp-fp16": {
+      "exp_id": "amp-fp16",
+      "group": "amp",
+      "description": "Controlled amp comparison",
+      "loss": "ce",
+      "optimizer": "sgd_momentum",
+      "lr": 0.05,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp16",
+      "seed": 1,
+      "hypothesis": "FP16 có thể giảm bộ nhớ, nhưng mạng nhỏ và GPU này có thể không nhanh hơn; chất lượng kỳ vọng gần FP32.",
+      "notes": "One factor changed relative to baseline; fixed seed 1."
+    },
+    "final-s2": {
+      "exp_id": "final-s2",
+      "group": "final",
+      "description": "Replica of validation-selected final configuration",
+      "loss": "ce",
+      "optimizer": "adam",
+      "lr": 0.003,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 2,
+      "hypothesis": "Cấu hình đã chọn bằng validation có thể dao động giữa seed; lặp seed 2 và 3 để đo nhiễu, không chọn lại theo eval.",
+      "notes": "Same selected config as search-adam-lr0.003; seed changed only. Not selected using eval."
+    },
+    "final-s3": {
+      "exp_id": "final-s3",
+      "group": "final",
+      "description": "Replica of validation-selected final configuration",
+      "loss": "ce",
+      "optimizer": "adam",
+      "lr": 0.003,
+      "weight_decay": 0.0,
+      "momentum": 0.9,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "batch": 512,
+      "epochs": 20,
+      "hidden": [
+        256,
+        128
+      ],
+      "dropout": 0.0,
+      "init": "he",
+      "clip_norm": null,
+      "precision": "fp32",
+      "seed": 3,
+      "hypothesis": "Cấu hình đã chọn bằng validation có thể dao động giữa seed; lặp seed 2 và 3 để đo nhiễu, không chọn lại theo eval.",
+      "notes": "Same selected config as search-adam-lr0.003; seed changed only. Not selected using eval."
+    }
+  },
+  "baseline_lr": 0.05,
+  "lr_search_winners": {
+    "sgd_momentum": "search-sgd_momentum-lr0.05",
+    "adam": "search-adam-lr0.003"
+  },
+  "clip_norm": 0.3896930664777756,
+  "clip_rule": "0.5 * median baseline epoch mean global gradient norm",
+  "selected_exp_id": "search-adam-lr0.003",
+  "selected_cfg": {
+    "exp_id": "search-adam-lr0.003",
+    "group": "optimizer",
+    "description": "Validation LR search: adam, lr=0.003",
+    "loss": "ce",
+    "optimizer": "adam",
+    "lr": 0.003,
+    "weight_decay": 0.0,
+    "momentum": 0.9,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "batch": 512,
+    "epochs": 20,
+    "hidden": [
+      256,
+      128
+    ],
+    "dropout": 0.0,
+    "init": "he",
+    "clip_norm": null,
+    "precision": "fp32",
+    "seed": 1,
+    "hypothesis": "Adam điều chỉnh bước theo từng tham số nên có thể hội tụ nhanh hơn SGD momentum, nhưng phải thử lr riêng cho mỗi optimizer.",
+    "notes": "20 epochs; optimizer and its learning rate calibrated together; fixed seed 1."
+  },
+  "selection_rule": "Highest validation macro-F1 of best-val-loss checkpoints, seed 1, completed runs",
+  "selection_fixed_before_eval": true,
+  "final_replica_ids": [
+    "final-s2",
+    "final-s3"
+  ],
+  "eval_files": {
+    "base-s1": "baseline_eval_result.json",
+    "base-s2": "eval_base_s2.json",
+    "base-s3": "eval_base_s3.json",
+    "search-adam-lr0.003": "eval_result.json",
+    "final-s2": "eval_final_s2.json",
+    "final-s3": "eval_final_s3.json"
+  }
+}
